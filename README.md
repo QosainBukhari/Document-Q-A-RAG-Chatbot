@@ -5,7 +5,7 @@ Production-ready Retrieval-Augmented Generation (RAG) chatbot that allows users 
 ---
 
 <p align="center">
-  <img src="./assest/image_UI.png" width="900"/>
+  <img src="assest/pic.png" width="900"/>
 </p>
 # Features
 
