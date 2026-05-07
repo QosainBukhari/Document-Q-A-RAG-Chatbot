@@ -4,6 +4,9 @@ Production-ready Retrieval-Augmented Generation (RAG) chatbot that allows users 
 
 ---
 
+<p align="center">
+  <img src="./asset/image_UI.png" width="900"/>
+</p>
 # Features
 
 * PDF upload and processing
