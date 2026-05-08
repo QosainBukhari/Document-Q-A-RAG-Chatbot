@@ -1,6 +1,7 @@
 from src.embeddings.embedding_model import EmbeddingModel
 from src.vectordb.chroma_store import ChromaVectorStore
-from src.llm.ollama_client import OllamaClient
+from src.llm.ollama_client import GroqClient
+from src.llm.conversation_memory import ConversationMemory
 
 from src.utils.logger import logger
 
@@ -8,6 +9,7 @@ from src.utils.logger import logger
 def load_models(app):
 
     try:
+
         logger.info("Loading embedding model...")
 
         embedding_model = EmbeddingModel().get_model()
@@ -20,17 +22,28 @@ def load_models(app):
 
         logger.info("Loading LLM...")
 
-        llm = OllamaClient().get_llm()
+        llm = GroqClient().get_llm()
+
+        logger.info("Loading conversation memory...")
+
+        memory = ConversationMemory(
+            window_size=5
+        )
 
         # Store globally inside FastAPI app
         app.state.embedding_model = embedding_model
         app.state.vectordb = vectordb
         app.state.llm = llm
+        app.state.memory = memory
 
-        logger.info("All models loaded successfully")
+        logger.info(
+            "All models loaded successfully"
+        )
 
     except Exception as e:
 
-        logger.error(f"Startup loading failed: {e}")
+        logger.error(
+            f"Startup loading failed: {e}"
+        )
 
         raise

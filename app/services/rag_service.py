@@ -4,19 +4,32 @@ from src.llm.rag_chain import RAGChain
 
 class RAGService:
 
-    def __init__(self, vectordb, llm):
+    def __init__(
+        self,
+        vectordb,
+        llm,
+        memory=None
+    ):
 
-        self.retriever = Retriever(vectordb)
+        self.retriever = Retriever(
+            vectordb
+        )
 
         self.rag_chain = RAGChain(
             self.retriever,
-            llm
+            llm,
+            memory
         )
 
-    def ask_question(self, question: str):
+    def ask_question(
+        self,
+        question: str
+    ):
 
-        response = self.rag_chain.generate_answer(
-            question
+        response = (
+            self.rag_chain.generate_answer(
+                question
+            )
         )
 
         return response

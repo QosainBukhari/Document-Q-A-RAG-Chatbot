@@ -20,10 +20,13 @@ async def chat(
 
         llm = request.app.state.llm
 
+        memory = request.app.state.memory
+
         # Create service
         rag_service = RAGService(
             vectordb,
-            llm
+            llm,
+            memory
         )
 
         # Generate response

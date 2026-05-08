@@ -3,29 +3,49 @@ from src.utils.logger import logger
 
 class RAGChain:
 
-    def __init__(self, retriever, llm):
+    def __init__(
+        self,
+        retriever,
+        llm,
+        memory=None
+    ):
 
         self.retriever = retriever
         self.llm = llm
+        self.memory = memory
 
     def generate_answer(self, query: str):
 
         try:
+
             # Retrieve relevant chunks
             retrieved_docs = self.retriever.retrieve(query)
 
             # Handle empty retrieval
             if not retrieved_docs:
 
-                logger.warning("No relevant documents retrieved")
+                logger.warning(
+                    "No relevant documents retrieved"
+                )
 
                 return {
                     "question": query,
-                    "answer": "I don't know based on the document.",
+                    "answer": (
+                        "I don't know based on the document."
+                    ),
                     "sources": []
                 }
 
-            # Build formatted context with citations
+            # Load conversation history
+            history_text = ""
+
+            if self.memory:
+
+                history_text = (
+                    self.memory.get_history()
+                )
+
+            # Build formatted context
             context = "\n\n".join([
                 f"""
 Source: {doc.metadata.get("source", "Unknown")}
@@ -37,8 +57,7 @@ Content:
                 for doc in retrieved_docs
             ])
 
-            # Production-style prompt
-             # Prompt template
+            # Prompt template
             prompt = f"""
 You are a factual and detailed AI assistant.
 
@@ -49,9 +68,15 @@ Rules:
 - Give detailed and well-structured explanations.
 - Explain technical concepts clearly.
 - Include important definitions, examples, and formulas if available in the context.
+- Use chat history for conversational continuity.
 - Minimum answer length: 5 sentences.
 - If the answer is not found in the context, say:
 "I don't know based on the document."
+
+Chat History:
+---------------------
+{history_text}
+---------------------
 
 Context:
 ---------------------
@@ -67,27 +92,43 @@ Detailed Answer:
             # Generate response
             response = self.llm.invoke(prompt)
 
-            # Handle different response formats
+            # Handle response format
             answer = (
                 response.content
                 if hasattr(response, "content")
                 else str(response)
             )
 
-            logger.info("Generated RAG response successfully")
+            # Save conversation
+            if self.memory:
 
-            # Extract clean source metadata
+                self.memory.save_context(
+                    query,
+                    answer
+                )
+
+            logger.info(
+                "Generated RAG response successfully"
+            )
+
+            # Clean unique sources
             sources = []
 
             for doc in retrieved_docs:
 
                 source_info = {
-                    "source": doc.metadata.get("source", "Unknown"),
-                    "page": doc.metadata.get("page", "N/A")
+                    "source": doc.metadata.get(
+                        "source",
+                        "Unknown"
+                    ),
+                    "page": doc.metadata.get(
+                        "page",
+                        "N/A"
+                    )
                 }
 
-                # Avoid duplicate sources
                 if source_info not in sources:
+
                     sources.append(source_info)
 
             return {
@@ -98,6 +139,8 @@ Detailed Answer:
 
         except Exception as e:
 
-            logger.error(f"RAG chain failed: {e}")
+            logger.error(
+                f"RAG chain failed: {e}"
+            )
 
             raise

@@ -1,32 +1,42 @@
 import os
 
 from dotenv import load_dotenv
-from langchain_ollama import OllamaLLM
+from langchain_groq import ChatGroq
 
 from src.utils.logger import logger
 
 load_dotenv()
 
 
-class OllamaClient:
+class GroqClient:
 
     def __init__(self):
 
-        self.model = os.getenv("OLLAMA_MODEL")
-        self.base_url = os.getenv("OLLAMA_BASE_URL")
+        self.api_key = os.getenv(
+            "GROQ_API_KEY"
+        )
+
+        self.model = os.getenv(
+            "GROQ_MODEL"
+        )
 
         try:
-            self.llm = OllamaLLM(
-                model=self.model,
-                base_url=self.base_url
+
+            self.llm = ChatGroq(
+                groq_api_key=self.api_key,
+                model_name=self.model
             )
 
             logger.info(
-                f"Ollama model loaded: {self.model}"
+                f"Groq model loaded: {self.model}"
             )
 
         except Exception as e:
-            logger.error(f"Failed to connect Ollama: {e}")
+
+            logger.error(
+                f"Failed to connect Groq: {e}"
+            )
+
             raise
 
     def get_llm(self):
