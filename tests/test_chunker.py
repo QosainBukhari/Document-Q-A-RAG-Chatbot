@@ -1,7 +1,7 @@
 from src.ingestion.pdf_loader import PDFLoader
 from src.ingestion.chunker import TextChunker
 
-loader=PDFLoader('data/raw/NIPS-2017-attention-is-all-you-need-Paper.pdf')
+loader=PDFLoader('data/raw/Ml_book')
 text = loader.load_pdf()
 
 chunker = TextChunker()
