@@ -4,7 +4,7 @@ from src.embeddings.embedding_model import EmbeddingModel
 from src.vectordb.chroma_store import ChromaVectorStore
 
 # Load PDF
-loader = PDFLoader("data/raw/Ml_book.pdf")
+loader = PDFLoader("test/Ml_book.pdf")
 text = loader.load_pdf()
 
 # Create chunks

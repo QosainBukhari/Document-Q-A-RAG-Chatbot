@@ -1,7 +1,7 @@
 from src.ingestion.pdf_loader import PDFLoader
 from src.ingestion.chunker import TextChunker
 
-loader=PDFLoader('data/raw/Ml_book.pdf')
+loader=PDFLoader('test/Ml_book.pdf')
 text = loader.load_pdf()
 
 chunker = TextChunker()
