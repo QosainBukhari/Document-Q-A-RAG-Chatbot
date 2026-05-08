@@ -32,4 +32,4 @@ jobs:
 
       - name: Run Tests
         run: |
-              PYTHONPATH=. pytest --ignore=tests
+              PYTHONPATH=. pytest
