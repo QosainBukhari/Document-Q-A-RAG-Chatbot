@@ -11,7 +11,10 @@ load_dotenv()
 class EmbeddingModel:
     def __init__(self):
 
-        self.model_name = os.getenv("EMBEDDING_MODEL")
+        self.model_name = os.getenv(
+                "EMBEDDING_MODEL",
+                "all-MiniLM-L6-v2"
+            )
 
         try:
             self.embedding_model = HuggingFaceEmbeddings(

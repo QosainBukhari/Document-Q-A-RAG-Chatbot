@@ -1,6 +1,6 @@
-from src.llm.ollama_client import OllamaClient
+from src.llm.ollama_client import GroqClient
 
-llm = OllamaClient().get_llm()
+llm = GroqClient().get_llm()
 
 response = llm.invoke("What is machine learning?")
 
