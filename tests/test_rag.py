@@ -1,7 +1,7 @@
 from src.embeddings.embedding_model import EmbeddingModel
 from src.vectordb.chroma_store import ChromaVectorStore
 from src.retriever.retriever import Retriever
-from src.llm.ollama_client import OllamaClient
+from src.llm.ollama_client import GroqClient
 from src.llm.rag_chain import RAGChain
 
 # Load embedding model
@@ -16,7 +16,7 @@ vectordb = ChromaVectorStore(
 retriever = Retriever(vectordb)
 
 # LLM
-llm = OllamaClient().get_llm()
+llm = GroqClient().get_llm()
 
 # RAG chain
 rag = RAGChain(retriever, llm)
