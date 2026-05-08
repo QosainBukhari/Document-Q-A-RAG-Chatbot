@@ -57,21 +57,22 @@ Content:
                 for doc in retrieved_docs
             ])
 
-            # Prompt template
             prompt = f"""
-You are a factual and detailed AI assistant.
+You are an intelligent Retrieval-Augmented Generation (RAG) assistant.
 
-Answer the question using ONLY the provided context.
+Your task is to answer the user's question using ONLY the provided context.
 
-Rules:
-- Do not use outside knowledge.
-- Give detailed and well-structured explanations.
-- Explain technical concepts clearly.
-- Include important definitions, examples, and formulas if available in the context.
-- Use chat history for conversational continuity.
-- Minimum answer length: 5 sentences.
-- If the answer is not found in the context, say:
-"I don't know based on the document."
+Instructions:
+- Do NOT use outside knowledge.
+- If the answer is not available in the context, respond exactly with:
+  "I don't know based on the document."
+- Provide clear, accurate, and well-structured answers.
+- Explain technical concepts in simple language.
+- Include important definitions, examples, formulas, or key points when available.
+- Use chat history only for conversational continuity.
+- Avoid repeating information.
+- Keep the response professional and concise.
+- Mention source page numbers naturally when relevant.
 
 Chat History:
 ---------------------
@@ -86,7 +87,7 @@ Context:
 Question:
 {query}
 
-Detailed Answer:
+Answer:
 """
 
             # Generate response
