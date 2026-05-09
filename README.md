@@ -1,8 +1,9 @@
-# Document Q&A RAG Chatbot
+📄 Document Q&A RAG Chatbot
+CI Pipeline
 
-Production-ready Retrieval-Augmented Generation (RAG) chatbot that allows users to upload PDF documents and ask questions using local Llama3 via Ollama, ChromaDB vector search, FastAPI, and Streamlit.
+Production-ready Retrieval-Augmented Generation (RAG) chatbot that allows users to upload PDF documents and ask questions using semantic search, vector embeddings, and Groq-powered Llama3.
 
----
+
 
 <p align="center">
   <img src="assest/pic.png" width="900"/>
@@ -255,7 +256,55 @@ Xavier initialization is commonly used for sigmoid and tanh activations to maint
 - `ml_book.pdf` — page 94
 
 ---
+Add this section to README:
 
+```markdown
+# ✅ Testing & CI
+
+This project includes automated tests using `pytest` and GitHub Actions CI.
+
+## Run Tests Locally
+
+Windows CMD:
+
+```bash
+set PYTHONPATH=.
+pytest
+```
+
+Linux/Mac:
+
+```bash
+PYTHONPATH=. pytest
+```
+
+## Current Test Results
+
+```text
+6 passed in 78.68s
+```
+
+## Tests Covered
+
+| Test File | Purpose |
+|----------|---------|
+| `test_pdf_loader.py` | Validates PDF loading and text extraction |
+| `test_chunker.py` | Validates document chunking |
+| `test_embeddings.py` | Validates embedding generation |
+| `test_vectordb.py` | Validates ChromaDB vector store creation |
+| `test_retriever.py` | Validates semantic retrieval |
+| `test_rag.py` | Validates full RAG response generation |
+
+## CI Pipeline
+
+GitHub Actions automatically runs the test suite on every push and pull request to `main`.
+
+Workflow file:
+
+```text
+.github/workflows/ci.yml
+```
+```
 # 🧩 Production Features
 
 ✅ Modular FastAPI architecture  
