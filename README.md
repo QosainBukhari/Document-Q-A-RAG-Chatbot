@@ -3,8 +3,6 @@ CI Pipeline
 
 Production-ready Retrieval-Augmented Generation (RAG) chatbot that allows users to upload PDF documents and ask questions using semantic search, vector embeddings, and Groq-powered Llama3.
 
-
-
 <p align="center">
   <img src="assest/pic.png" width="900"/>
 </p>
@@ -256,7 +254,7 @@ Xavier initialization is commonly used for sigmoid and tanh activations to maint
 - `ml_book.pdf` — page 94
 
 ---
-Add this section to README:
+
 
 ```markdown
 # ✅ Testing & CI
