@@ -1,7 +1,13 @@
+
 from src.ingestion.pdf_loader import PDFLoader
 
-loader = PDFLoader("test/Ml_book.pdf")
 
-text = loader.load_pdf()
+def test_pdf_loader():
 
-print(text[:1000])
+    loader = PDFLoader("test/Ml_book.pdf")
+
+    documents = loader.load_pdf()
+
+    assert documents is not None
+
+    assert len(documents) > 0

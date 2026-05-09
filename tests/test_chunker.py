@@ -1,14 +1,21 @@
 from src.ingestion.pdf_loader import PDFLoader
 from src.ingestion.chunker import TextChunker
 
-loader=PDFLoader('test/Ml_book.pdf')
-text = loader.load_pdf()
 
-chunker = TextChunker()
+def test_chunker():
 
-chunks = chunker.create_chunks(text)
+    loader = PDFLoader(
+        "test/Ml_book.pdf"
+    )
 
-print(f"Total chunks: {len(chunks)}")
+    documents = loader.load_pdf()
 
-print("\nFIRST CHUNK:\n")
-print(chunks[0])
+    chunker = TextChunker()
+
+    chunks = chunker.create_chunks(
+        documents
+    )
+
+    assert chunks is not None
+
+    assert len(chunks) > 0

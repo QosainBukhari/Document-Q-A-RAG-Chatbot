@@ -1,7 +1,14 @@
 from src.embeddings.embedding_model import EmbeddingModel
 
-model = EmbeddingModel().get_model()
 
-embedding = model.embed_query("What is machine learning?")
+def test_embeddings():
 
-print(f"Embedding dimension: {len(embedding)}")
+    model = EmbeddingModel().get_model()
+
+    embedding = model.embed_query(
+        "What is machine learning?"
+    )
+
+    assert embedding is not None
+
+    assert len(embedding) > 0

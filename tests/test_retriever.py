@@ -1,24 +1,39 @@
+from src.ingestion.pdf_loader import PDFLoader
+from src.ingestion.chunker import TextChunker
+
 from src.embeddings.embedding_model import EmbeddingModel
 from src.vectordb.chroma_store import ChromaVectorStore
 from src.retriever.retriever import Retriever
 
-# Load embedding model
-embedding_model = EmbeddingModel().get_model()
 
-# Load existing DB
-vectordb = ChromaVectorStore(
-    embedding_model
-).load_vector_store()
+def test_retriever():
 
-# Create retriever
-retriever = Retriever(vectordb)
+    loader = PDFLoader(
+        "test/Ml_book.pdf"
+    )
 
-query = "What is the self attention?"
+    documents = loader.load_pdf()
 
-results = retriever.retrieve(query)
+    chunker = TextChunker()
 
-for i, doc in enumerate(results, start=1):
+    chunks = chunker.create_chunks(
+        documents
+    )
 
-    print(f"\nRESULT {i}\n")
+    embedding_model = (
+        EmbeddingModel().get_model()
+    )
 
-    print(doc.page_content[:500])
+    vectordb = ChromaVectorStore(
+        embedding_model
+    ).create_vector_store(chunks)
+
+    retriever = Retriever(vectordb)
+
+    results = retriever.retrieve(
+        "What is this document about?"
+    )
+
+    assert results is not None
+
+    assert len(results) > 0

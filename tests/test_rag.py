@@ -1,32 +1,50 @@
+from src.ingestion.pdf_loader import PDFLoader
+from src.ingestion.chunker import TextChunker
+
 from src.embeddings.embedding_model import EmbeddingModel
 from src.vectordb.chroma_store import ChromaVectorStore
+
 from src.retriever.retriever import Retriever
+
 from src.llm.ollama_client import GroqClient
 from src.llm.rag_chain import RAGChain
 
-# Load embedding model
-embedding_model = EmbeddingModel().get_model()
 
-# Load vector DB
-vectordb = ChromaVectorStore(
-    embedding_model
-).load_vector_store()
+def test_rag():
 
-# Retriever
-retriever = Retriever(vectordb)
+    loader = PDFLoader(
+        "test/Ml_book.pdf"
+    )
 
-# LLM
-llm = GroqClient().get_llm()
+    documents = loader.load_pdf()
 
-# RAG chain
-rag = RAGChain(retriever, llm)
+    chunker = TextChunker()
 
-query = "What is self-attention?"
+    chunks = chunker.create_chunks(
+        documents
+    )
 
-response = rag.generate_answer(query)
+    embedding_model = (
+        EmbeddingModel().get_model()
+    )
 
-print("\nANSWER:\n")
-print(response["answer"])
+    vectordb = ChromaVectorStore(
+        embedding_model
+    ).create_vector_store(chunks)
 
-print("\nSOURCES:\n")
-print(response["sources"])
+    retriever = Retriever(vectordb)
+
+    llm = GroqClient().get_llm()
+
+    rag = RAGChain(
+        retriever,
+        llm
+    )
+
+    response = rag.generate_answer(
+        "What is this document about?"
+    )
+
+    assert response is not None
+
+    assert "answer" in response
